@@ -5,9 +5,6 @@ function Player:new(x,y)
   self.y = y
 
   self.sprite = love.graphics.newImage("game/sprites/player.png")
-  
-  self.xVel = 0
-  self.yVel = 0
 
 end
 
