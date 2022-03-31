@@ -107,3 +107,7 @@ function switchGameState(state, reset)
 		gameState="game"
 	end
 end
+
+function degToRad(angle)
+return angle * (math.pi / 180)
+end

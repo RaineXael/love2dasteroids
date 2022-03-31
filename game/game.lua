@@ -3,7 +3,7 @@ function GameInitialize()
 
 	require("game/player")
 	player = Player(resolution.x/2, resolution.y/2)
-
+    score = 0
 end
 
 

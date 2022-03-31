@@ -24,32 +24,20 @@ end
 
 function Player:Update(dt)
 
-	if love.keyboard.isDown("a") then
+	if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
 	print("a pressed")
 		self.rotation = self.rotation - (dt * self.rotateSpeed)
 	end
 	
-	if love.keyboard.isDown("d") then
+	if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
 	print("d pressed")
 		self.rotation = self.rotation + (dt * self.rotateSpeed)
 	end
 	
-	if love.keyboard.isDown("w") then
+	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
 	print("w pressed")
-	self.velocity.x = self.velocity.x - math.cos(self:degToRad(self.rotation))
-	self.velocity.y = self.velocity.y - math.sin(self:degToRad(self.rotation))
-	end
-	
-	if love.keyboard.isDown("r") then
-	print("w pressed")
-	self.x = resolution.x/2
-	self.y = resolution.y/2
-	end
-	
-	if love.keyboard.isDown("t") then
-	print("w pressed")
-	self.velocity.x = 0
-	self.velocity.y = 0
+	self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation))
+	self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation))
 	end
 	
 	--do velocity
@@ -96,15 +84,10 @@ function Player:clampPosition()
 	end
 end
 
-function Player:degToRad(degree)
-	return degree * (math.pi/180)
-end
-
-
 
 function Player:Draw()
 
-  love.graphics.draw(self.sprite, math.floor(self.x),math.floor(self.y),self:degToRad(self.rotation - 90),1,1, 8, 8)
+  love.graphics.draw(self.sprite, math.floor(self.x),math.floor(self.y),degToRad(self.rotation - 90),1,1, 8, 8)
   love.graphics.setColor( 0, 1, 0 )
   --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
   love.graphics.setColor( 1, 0, 0 )
@@ -113,5 +96,7 @@ function Player:Draw()
 end
 
 function Player:OnKeyPress(key)
-
+	if key = "j" or key = "z" then 
+	--summon projectile
+	end
 end

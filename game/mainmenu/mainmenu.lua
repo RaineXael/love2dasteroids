@@ -10,7 +10,7 @@ function mainMenustart()
     menuButtonGroup = {
         buttonObjects = {
             MenuButton(resolution.x/2, 0, "New Game"),
-            MenuButton(resolution.x/2, 0, "Continue"),
+            MenuButton(resolution.x/2, 0, "High Scores"),
             MenuButton(resolution.x/2, 0, "Settings"),
             MenuButton(resolution.x/2, 0, "Credits"),
             MenuButton(resolution.x/2, 0, "Quit"),
