@@ -8,7 +8,7 @@ function Player:new(x,y)
   self.height = 16
 
   self.rotation = 0
-  self.rotateSpeed = 130
+  self.rotateSpeed = 150
 
   self.sprite = love.graphics.newImage("game/sprites/player.png")
   
@@ -17,8 +17,8 @@ function Player:new(x,y)
 	  y = 0
   }
   
-  self.maxVelocity = 180
-  self.thrust = 5
+  self.maxVelocity = 160
+  self.thrust = 3
 
   require("game/playerBullet")
 
@@ -37,8 +37,8 @@ function Player:Update(dt)
 	end
 	
 	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
-		self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation))
-		self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation))
+		self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust
+		self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust
 	end
 	
 	--do velocity
@@ -61,6 +61,9 @@ function Player:Update(dt)
 	
 	for i in pairs(self.playerBulletTable) do
 		self.playerBulletTable[i]:Update(dt)
+		if self.playerBulletTable[i].dead then
+			table.remove(self.playerBulletTable, i)
+		end
 	end
 
 end
@@ -90,8 +93,8 @@ end
 
 function Player:Draw()
 
-  love.graphics.draw(self.sprite, math.floor(self.x),math.floor(self.y),degToRad(self.rotation - 90), 0.25, 0.25, 32, 32)
-  love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
+  love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
+  --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
 
 	--draw bullets
 	for i in pairs(self.playerBulletTable) do
@@ -103,7 +106,6 @@ end
 function Player:OnKeyPress(key)
 	if key == "j" or key == "z" then 
 	--summon projectile
-
 	table.insert(self.playerBulletTable, PlayerBullet(self.x, self.y, self.rotation - 180))
 	end
 end

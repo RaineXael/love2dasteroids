@@ -1,25 +1,29 @@
 PlayerBullet = Object:extend()
 
-function PlayerBullet:new(x,y, rotation)
+function PlayerBullet:new(x,y, rotation, parentTable)
     self.x = x
     self.y = y
     self.rotation = rotation
 
-    self.moveSpeed = 8
-    self.lifespan = 4
+    self.moveSpeed = 6
+    self.lifespan = 1.5
 
     self.width = 3
     self.height = 3
+
+    self.dead = false
 end
 
 function PlayerBullet:Update(dt)
-    self.x = self.x + math.cos(degToRad(self.rotation))
-    self.y = self.y + math.sin(degToRad(self.rotation))
-
-    self.lifespan = self.lifespan - dt
+    self.x = self.x + math.cos(degToRad(self.rotation)) * self.moveSpeed
+    self.y = self.y + math.sin(degToRad(self.rotation)) * self.moveSpeed
 
     if self.lifespan <= 0 then
         --die
+        self.dead = true
+        
+    else
+        self.lifespan = self.lifespan - dt
     end
 
     self:clampPosition()
@@ -47,5 +51,5 @@ function PlayerBullet:clampPosition()
 end
 
 function PlayerBullet:Draw()
-    love.graphics.circle("fill", self.x, self.y, 3)
+    love.graphics.circle("fill", self.x, self.y, 2)
 end
