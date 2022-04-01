@@ -7,8 +7,8 @@ function love.load()
 	love.graphics.setFont(font)
 	
 	resolution = {
-		x = 320,
-		y = 180
+		x = 640,
+		y = 360
 
 	}
 
