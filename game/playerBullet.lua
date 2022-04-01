@@ -1,4 +1,4 @@
-PlayerBullet = Object:extend
+PlayerBullet = Object:extend()
 
 function PlayerBullet:new(x,y, rotation)
     self.x = x
@@ -7,6 +7,9 @@ function PlayerBullet:new(x,y, rotation)
 
     self.moveSpeed = 8
     self.lifespan = 4
+
+    self.width = 3
+    self.height = 3
 end
 
 function PlayerBullet:Update(dt)
@@ -18,4 +21,31 @@ function PlayerBullet:Update(dt)
     if self.lifespan <= 0 then
         --die
     end
+
+    self:clampPosition()
+end
+
+function PlayerBullet:clampPosition()
+    if self.x  + 8 <= 0 then
+
+		self.x = resolution.x - 1
+		--touch left side of screen
+	end
+	
+	if (self.x + self.width -16 ) > resolution.x then
+	--touch right side of screen
+		self.x = 17
+	end
+	
+	if(self.y +8 < camera.y) then
+		self.y = resolution.y - 1
+	end
+	
+	if(self.y > ( resolution.y)) then
+		self.y = 17
+	end
+end
+
+function PlayerBullet:Draw()
+    love.graphics.circle("fill", self.x, self.y, 3)
 end
