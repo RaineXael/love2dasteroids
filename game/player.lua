@@ -18,7 +18,7 @@ function Player:new(x,y)
   }
   
   self.maxVelocity = 160
-  self.thrust = 3
+  self.thrust = 160
 
   require("game/playerBullet")
 
@@ -37,8 +37,8 @@ function Player:Update(dt)
 	end
 	
 	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
-		self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust
-		self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust
+		self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust * dt
+		self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust * dt
 	end
 	
 	--do velocity
