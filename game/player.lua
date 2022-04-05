@@ -16,6 +16,10 @@ function Player:new(x,y)
 	  x = 0,
 	  y = 0
   }
+   self.normalVelocity = {
+		x = 0,
+		y = 0
+   }
   
   self.maxVelocity = 160
   self.thrust = 160
@@ -28,6 +32,7 @@ function Player:new(x,y)
 end
 
 function Player:Update(dt)
+
 
 	if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
 		self.rotation = self.rotation - (dt * self.rotateSpeed)
@@ -47,34 +52,37 @@ function Player:Update(dt)
 	self.x = self.x + self.velocity.x * dt 
 	self.y = self.y + self.velocity.y * dt
 	
-	
-	
 	--clamp
 	self:clampPosition()
 	
 	self.magnitude = math.sqrt(math.pow(self.velocity.x, 2) + math.pow(self.velocity.y, 2))
+	--set normalized velocities
+	self.normalVelocity.x = (self.velocity.x / self.magnitude)
+	self.normalVelocity.y = (self.velocity.y / self.magnitude)
+	
+	if tostring(self.normalVelocity.x) == "nan" then
+		self.normalVelocity.x = 0
+	end
+	if tostring(self.normalVelocity.y) == "nan" then
+		self.normalVelocity.y = 0
+	end
+	
 	
 	if self.magnitude > self.maxVelocity then
-		print("Over velocity")
+		
 		--normalize
-		self.velocity.x = (self.velocity.x / self.magnitude) * self.maxVelocity
-		self.velocity.y = (self.velocity.y / self.magnitude) * self.maxVelocity
+		self.velocity.x = self.normalVelocity.x * self.maxVelocity
+		self.velocity.y = self.normalVelocity.y * self.maxVelocity
 
 		
 	end
+	
+	print("Normalized Velocity: ", (self.velocity.x / self.magnitude), ",", (self.velocity.y / self.magnitude))
 
-	--do friction
-	if self.velocity.x > 0 then
-		self.velocity.x = self.velocity.x - (dt * self.friction)
-	elseif self.velocity.x < 0 then
-		self.velocity.x = self.velocity.x + (dt * self.friction)
-	end
-
-	if self.velocity.y > 0 then
-		self.velocity.y = self.velocity.y - (dt * self.friction)
-	elseif self.velocity.y < 0 then
-		self.velocity.y = self.velocity.y + (dt * self.friction)
-	end
+	--friction
+	--apply an opposite force on the player on negative the normalized velocity.
+	self.velocity.x = self.velocity.x - (dt * self.friction * self.normalVelocity.x)
+	self.velocity.y = self.velocity.y - (dt * self.friction * self.normalVelocity.y)
 	
 	for i in pairs(self.playerBulletTable) do
 		self.playerBulletTable[i]:Update(dt)
@@ -111,8 +119,11 @@ end
 function Player:Draw()
 
   love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
-  love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
+  --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
 
+	--love.graphics.print(self.x, 0,15)
+	--love.graphics.print(self.y, 0,30)
+	
 	--draw bullets
 	for i in pairs(self.playerBulletTable) do
 		self.playerBulletTable[i]:Draw()

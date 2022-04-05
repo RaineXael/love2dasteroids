@@ -11,7 +11,7 @@ function PlayerBullet:new(x,y, rotation, parentTable)
     self.height = 3
 
     self.dead = false
-		self.lifespan = 0.85
+		self.lifespan = 1.2
 end
 
 function PlayerBullet:Update(dt)
