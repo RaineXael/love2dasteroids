@@ -19,6 +19,7 @@ function Player:new(x,y)
   
   self.maxVelocity = 160
   self.thrust = 160
+	self.friction = 40
 
   require("game/playerBullet")
 
@@ -47,6 +48,7 @@ function Player:Update(dt)
 	self.y = self.y + self.velocity.y * dt
 	
 	
+	
 	--clamp
 	self:clampPosition()
 	
@@ -57,6 +59,21 @@ function Player:Update(dt)
 		--normalize
 		self.velocity.x = (self.velocity.x / self.magnitude) * self.maxVelocity
 		self.velocity.y = (self.velocity.y / self.magnitude) * self.maxVelocity
+
+		
+	end
+
+	--do friction
+	if self.velocity.x > 0 then
+		self.velocity.x = self.velocity.x - (dt * self.friction)
+	elseif self.velocity.x < 0 then
+		self.velocity.x = self.velocity.x + (dt * self.friction)
+	end
+
+	if self.velocity.y > 0 then
+		self.velocity.y = self.velocity.y - (dt * self.friction)
+	elseif self.velocity.y < 0 then
+		self.velocity.y = self.velocity.y + (dt * self.friction)
 	end
 	
 	for i in pairs(self.playerBulletTable) do
@@ -94,7 +111,7 @@ end
 function Player:Draw()
 
   love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
-  --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
+  love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
 
 	--draw bullets
 	for i in pairs(self.playerBulletTable) do

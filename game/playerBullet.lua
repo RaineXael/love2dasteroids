@@ -11,8 +11,7 @@ function PlayerBullet:new(x,y, rotation, parentTable)
     self.height = 3
 
     self.dead = false
-    self.warps = 0 --counts warps to die after a certain # of them
-    self.maxWarps = 3
+		self.lifespan = 0.85
 end
 
 function PlayerBullet:Update(dt)
@@ -21,16 +20,22 @@ function PlayerBullet:Update(dt)
 
     self:clampPosition()
 
-    if self.warps >= self.maxWarps then
-	self.dead = true --mark for death
-    end
+		self.lifespan = self.lifespan - dt
+		if self.lifespan <= 0 then
+			--die
+			self.dead = true
+			
+		else
+			self.lifespan = self.lifespan - dt
+		end
+
 end
 
 
 function PlayerBullet:clampPosition()
     	if self.x  + 8 <= 0 then
 
-		self.warps = self.warps + 1
+		 
 		self.x = resolution.x - 1
 		--touch left side of screen
 	end
@@ -38,17 +43,17 @@ function PlayerBullet:clampPosition()
 	if (self.x + self.width -16 ) > resolution.x then
 	--touch right side of screen
 		self.x = 17
-		self.warps = self.warps + 1
+		 
 	end
 	
 	if(self.y +8 < camera.y) then
 		self.y = resolution.y - 1
-		self.warps = self.warps + 1
+		 
 	end
 	
 	if(self.y > ( resolution.y)) then
 		self.y = 17
-		self.warps = self.warps + 1
+		 
 	end
 end
 
