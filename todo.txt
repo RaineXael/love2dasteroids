@@ -1,3 +1,2 @@
-put friction on the player
-implement asteroid hit detection and fracturing
+implement asteroid fracturing
 implement player death
