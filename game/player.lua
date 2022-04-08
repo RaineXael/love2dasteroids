@@ -1,6 +1,9 @@
 Player = Object:extend()
 
 function Player:new(x,y)
+
+	self.lives = 3
+
   self.x = x
   self.y = y
   
@@ -77,7 +80,7 @@ function Player:Update(dt)
 		
 	end
 	
-	print("Normalized Velocity: ", (self.velocity.x / self.magnitude), ",", (self.velocity.y / self.magnitude))
+	--print("Normalized Velocity: ", (self.velocity.x / self.magnitude), ",", (self.velocity.y / self.magnitude))
 
 	--friction
 	--apply an opposite force on the player on negative the normalized velocity.
@@ -115,6 +118,11 @@ function Player:clampPosition()
 	end
 end
 
+function Player:onHit()
+	self.lives = self.lives - 1
+	self.x = 0
+	self.y = 0
+end
 
 function Player:Draw()
 

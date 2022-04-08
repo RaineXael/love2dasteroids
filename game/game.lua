@@ -28,9 +28,12 @@ function GameUpdate(dt)
 
 end
 
-function detectCollision(obj1, obj2)
+function getDistanceBetween(object1, object2)
 
+	return math.sqrt(math.pow(object1.x - object2.x,2) + math.pow(object1.y - object2.y, 2))
+	
 end
+
 
 function Gamekeypressed(key)
 		

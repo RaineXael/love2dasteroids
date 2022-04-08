@@ -58,8 +58,7 @@ function mainMenukeypressed(key)
     end
 
     if key == "z" or key == "j" then
-        menuSelect();
-        print(mainMenuIndex)
+        menuSelect()
     end
 end
 

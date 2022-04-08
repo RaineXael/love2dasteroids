@@ -9,8 +9,13 @@ function Asteroid:new(x,y,velocityX, velocityY,speed,destroyedLevel)
 	  x = velocityX,
 	  y = velocityY
 	}
+
+    self.rotation = 0
+    self.rotateSpeed = love.math.random(100)/50
 	
 	self.dead = false
+
+    self.sprite = love.graphics.newImage("game/sprites/asteroid.png")
   
 	--normalize vel
 	self.magnitude = math.sqrt(math.pow(self.velocity.x, 2) + math.pow(self.velocity.y, 2))
@@ -40,6 +45,14 @@ function Asteroid:Update(dt)
 	self.x = self.x + self.velocity.x * dt * self.speed
 	self.y = self.y + self.velocity.y * dt * self.speed
 
+    --animate rotation
+    self.rotation = self.rotation + self.rotateSpeed * dt
+
+    if getDistanceBetween(self, player) < self.size then
+        print("Player collide!")
+        --kill player
+        player:onHit()
+    end
 end
 
 function Asteroid:Fragment()
@@ -56,5 +69,8 @@ function Asteroid:OnKeyPress(key)
 end
 
 function Asteroid:Draw()
-    love.graphics.circle("fill", self.x, self.y, self.size)
+    --love.graphics.setColor(1,0,0)
+    --love.graphics.circle("fill", self.x, self.y, self.size) --hitbox
+    love.graphics.setColor(1,1,1)
+    love.graphics.draw(self.sprite, self.x, self.y, self.rotation, self.size/64, self.size/64, 64,64) --sprite
 end
