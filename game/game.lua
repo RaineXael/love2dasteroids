@@ -7,11 +7,26 @@ function GameInitialize()
     score = 0
 	asteroids = {} --table of asteroids
 	
-	table.insert(asteroids, Asteroid(15,15,15,15,15,3))
-	table.insert(asteroids, Asteroid(100,100,15,15,15,2))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
 	
 end
 
+function randomPosition()
+	randomVector = {
+        x = love.math.random(resolution.x),
+        y = love.math.random(resolution.y)
+    }
+
+	return randomVector
+end
 
 function GameUpdate(dt)
 

@@ -53,13 +53,57 @@ function Asteroid:Update(dt)
         --kill player
         player:onHit()
     end
+
+    self:clampPosition()
 end
 
 function Asteroid:Fragment()
 --give player score, mark for death, and fragment
-	table.insert(asteroids, Asteroid(self.x, self.y, -15, 15, 10, self.destroyedLevel - 1))
-	table.insert(asteroids, Asteroid(self.x, self.y, 15, -15, 10, self.destroyedLevel - 1))
+    direction = self:RandomDirection()
+
+    self.asteroid1Vec = self:RandomDirection()
+    self.asteroid2Vec = self:RandomDirection()
+
+	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid1Vec.x, self.asteroid1Vec.y, self.speed * love.math.random(500)/100 + 2, self.destroyedLevel - 1))
+	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid2Vec.x, self.asteroid2Vec.y, self.speed * love.math.random(500)/100 + 2, self.destroyedLevel - 1))
 	self.dead = true
+end
+
+function Asteroid:RandomDirection()
+    --returns a table with a random vector
+    randomVector = {
+        x = (love.math.random(200)/100)-1,
+        y = (love.math.random(200)/100)-1
+    }
+    print(randomVector.x, "-", randomVector.y)
+    magnitude = math.sqrt(math.pow(randomVector.x, 2) + math.pow(randomVector.y, 2))
+    randomVector.x = randomVector.x/magnitude
+    randomVector.y = randomVector.y/magnitude
+
+    return randomVector
+
+end 
+
+function Asteroid:clampPosition()
+	--clamp camera
+	if self.x <= 0 then
+
+		self.x = resolution.x - 1
+		--touch left side of screen
+	end
+	
+	if (self.x) > resolution.x then
+	--touch right side of screen
+		self.x = 17
+	end
+	
+	if(self.y < camera.y) then
+		self.y = resolution.y - 1
+	end
+	
+	if(self.y > (resolution.y)) then
+		self.y = 17
+	end
 end
 
 function Asteroid:Draw()
