@@ -39,12 +39,6 @@ function Gamekeypressed(key)
 		
 	player:OnKeyPress(key)
 
-	--debug
-	for i in pairs(asteroids) do
-		asteroids[i]:OnKeyPress(key)
-	end
-
-
 end
 
 function GameDraw()

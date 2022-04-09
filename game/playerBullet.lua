@@ -29,6 +29,13 @@ function PlayerBullet:Update(dt)
 			self.lifespan = self.lifespan - dt
 		end
 
+		for i in pairs(asteroids) do
+			if getDistanceBetween(self, asteroids[i]) < asteroids[i].size then
+				asteroids[i]:Fragment()
+				self.dead = true
+			end
+		end
+
 end
 
 

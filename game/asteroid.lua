@@ -57,15 +57,9 @@ end
 
 function Asteroid:Fragment()
 --give player score, mark for death, and fragment
-	--table.insert(asteroids, Asteroid(self.x, self.y, -15, 15, 10, self.destroyedLevel - 1))
-	--table.insert(asteroids, Asteroid(self.x, self.y, 15, -15, 10, self.destroyedLevel - 1))
+	table.insert(asteroids, Asteroid(self.x, self.y, -15, 15, 10, self.destroyedLevel - 1))
+	table.insert(asteroids, Asteroid(self.x, self.y, 15, -15, 10, self.destroyedLevel - 1))
 	self.dead = true
-end
-
-function Asteroid:OnKeyPress(key)
-	if key == "t" then
-		self:Fragment()
-	end
 end
 
 function Asteroid:Draw()
