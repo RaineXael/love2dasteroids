@@ -59,6 +59,11 @@ function love.keypressed(key)
 	if(key == "f3") then
 		switchScale(3)
 	end
+	
+	--debug
+	if (key == "r") then
+		love.event.quit('restart')
+	end
 
 	--comment
 end	

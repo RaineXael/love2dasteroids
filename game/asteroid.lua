@@ -64,8 +64,8 @@ function Asteroid:Fragment()
     self.asteroid1Vec = self:RandomDirection()
     self.asteroid2Vec = self:RandomDirection()
 
-	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid1Vec.x, self.asteroid1Vec.y, self.speed * love.math.random(500)/100 + 2, self.destroyedLevel - 1))
-	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid2Vec.x, self.asteroid2Vec.y, self.speed * love.math.random(500)/100 + 2, self.destroyedLevel - 1))
+	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid1Vec.x, self.asteroid1Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1))
+	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid2Vec.x, self.asteroid2Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1))
 	self.dead = true
 end
 

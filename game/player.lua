@@ -120,8 +120,8 @@ end
 
 function Player:onHit()
 	self.lives = self.lives - 1
-	self.x = 0
-	self.y = 0
+	self.x = resolution.x / 2
+	self.y = resolution.y / 2
 end
 
 function Player:Draw()

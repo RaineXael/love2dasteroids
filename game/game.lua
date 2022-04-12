@@ -7,15 +7,8 @@ function GameInitialize()
     score = 0
 	asteroids = {} --table of asteroids
 	
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
-	table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))
+	currentAsteroidCount = 1;
+	spawnAsteroidWave(currentAsteroidCount)
 	
 end
 
@@ -40,8 +33,23 @@ function GameUpdate(dt)
 		end
 		
 	end
+	
+	if asteroids[1] == nil then --detects when there are no more asteroids in play
+		print("No more asteroids!!")
+		--should spawn another wave of asteroids
+		currentAsteroidCount = currentAsteroidCount + 1
+		spawnAsteroidWave(currentAsteroidCount)
+	end
 
 end
+
+function spawnAsteroidWave(count)
+		
+	for i=0,count,1 do
+		table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3))	
+	end	
+end
+
 
 function getDistanceBetween(object1, object2)
 
