@@ -27,6 +27,9 @@ function love.load()
 
 	gameState = "mainmenu"
 	switchGameState(gameState, true)
+	
+	escapeTimer = 0 --timer used to make the game quit after holding escape
+	escapeScale = 0.75 --scale of timer speed for above
 end
 
 function love.update(dt)
@@ -34,6 +37,17 @@ function love.update(dt)
 		GameUpdate(dt)
 	elseif gameState == "mainmenu" then
 		mainMenuUpdate(dt)
+	end
+	
+	--hold escape to quit
+	if love.keyboard.isDown("escape") then
+		escapeTimer = escapeTimer + dt * escapeScale
+	elseif escapeTimer > 0 then
+		escapeTimer = escapeTimer - dt * escapeScale
+	end
+	
+	if escapeTimer >= 1.5 then
+		love.event.quit()
 	end
 	
 end
@@ -59,19 +73,12 @@ function love.keypressed(key)
 	if(key == "f3") then
 		switchScale(3)
 	end
-	
-	--debug
-	if (key == "r") then
-		love.event.quit('restart')
-	end
 
-	--comment
 end	
 
 function love.draw()
 	
 	love.graphics.scale(windowScale,windowScale) --first line
-
 	love.graphics.translate(math.floor(-camera.x),math.floor(-camera.y))
 
 	--print game here
@@ -81,8 +88,10 @@ function love.draw()
 		mainMenuDraw()
 	end
 
-	love.graphics.print(love.timer.getFPS(),camera.x, camera.y)
-		
+	--love.graphics.print(love.timer.getFPS(),camera.x, camera.y)	
+	love.graphics.setColor(1,1,1,escapeTimer)
+	love.graphics.print("Quitting...", camera.x, resolution.y - font:getHeight())
+	love.graphics.setColor(1,1,1,1)
 end
 
 

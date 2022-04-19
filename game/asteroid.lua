@@ -1,6 +1,6 @@
 Asteroid = Object:extend()
 
-function Asteroid:new(x,y,velocityX, velocityY,speed,destroyedLevel)
+function Asteroid:new(x,y,velocityX, velocityY,speed,destroyedLevel, scoreWorth)
     self.x = x
     self.y = y
 
@@ -64,9 +64,11 @@ function Asteroid:Fragment()
     self.asteroid1Vec = self:RandomDirection()
     self.asteroid2Vec = self:RandomDirection()
 
-	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid1Vec.x, self.asteroid1Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1))
-	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid2Vec.x, self.asteroid2Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1))
+	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid1Vec.x, self.asteroid1Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
+	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid2Vec.x, self.asteroid2Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
 	self.dead = true
+	
+	score = score + self.scoreWorth
 end
 
 function Asteroid:RandomDirection()
