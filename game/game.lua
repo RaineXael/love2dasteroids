@@ -3,6 +3,7 @@ function GameInitialize()
 
 	require("game/player")
 	require("game/asteroid")
+	require("game/shipDebris")
 	player = Player(resolution.x/2, resolution.y/2)
     score = 0
 	asteroids = {} --table of asteroids
@@ -14,6 +15,8 @@ function GameInitialize()
 		x = 3,
 		y = 3
 	}
+	
+	sd = ShipDebris(resolution.x/2,resolution.y/2)
 	
 end
 
@@ -29,7 +32,7 @@ end
 function GameUpdate(dt)
 
 	player:Update(dt)
-   
+   sd:Update(dt)
 	for i in pairs(asteroids) do
 		if asteroids[i].dead == true then
 			table.remove(asteroids, i)
@@ -55,7 +58,7 @@ end
 function spawnAsteroidWave(count)
 		
 	for i=0,count,1 do
-		table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,15,15,3,5))	
+		table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,3,5))	
 	end	
 end
 
@@ -79,6 +82,11 @@ function GameDraw()
 	for i in pairs(asteroids) do
 		asteroids[i]:Draw()
 	end
+	
+	sd:Draw()
 	love.graphics.print("SCORE:",camera.x + scorePadding.x, camera.y + scorePadding.y)
 	love.graphics.printf(score,camera.x + scorePadding.x, camera.y + font:getHeight() + 2 + scorePadding.y, math.floor(resolution.x/6), "right")
+	
+	love.graphics.printf("LIVES:",camera.x - scorePadding.x, camera.y + scorePadding.y, math.floor(resolution.x), "right")
+	love.graphics.printf(player.lives,camera.x - scorePadding.x, camera.y + font:getHeight() + 2 + scorePadding.y, math.floor(resolution.x), "right")
 end

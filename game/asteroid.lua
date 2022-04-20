@@ -1,14 +1,11 @@
 Asteroid = Object:extend()
 
-function Asteroid:new(x,y,velocityX, velocityY,speed,destroyedLevel, scoreWorth)
+function Asteroid:new(x,y,speed,destroyedLevel, scoreWorth)
     self.x = x
     self.y = y
 
     self.speed = speed
-    self.velocity = {
-	  x = velocityX,
-	  y = velocityY
-	}
+    self.velocity = self:RandomDirection()
 
     self.rotation = 0
     self.rotateSpeed = love.math.random(100)/50
@@ -61,11 +58,10 @@ function Asteroid:Fragment()
 --give player score, mark for death, and fragment
     direction = self:RandomDirection()
 
-    self.asteroid1Vec = self:RandomDirection()
-    self.asteroid2Vec = self:RandomDirection()
 
-	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid1Vec.x, self.asteroid1Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
-	table.insert(asteroids, Asteroid(self.x, self.y, self.asteroid2Vec.x, self.asteroid2Vec.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
+
+	table.insert(asteroids, Asteroid(self.x, self.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
+	table.insert(asteroids, Asteroid(self.x, self.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
 	self.dead = true
 	
 	score = score + self.scoreWorth
@@ -77,7 +73,6 @@ function Asteroid:RandomDirection()
         x = (love.math.random(200)/100)-1,
         y = (love.math.random(200)/100)-1
     }
-    print(randomVector.x, "-", randomVector.y)
     magnitude = math.sqrt(math.pow(randomVector.x, 2) + math.pow(randomVector.y, 2))
     randomVector.x = randomVector.x/magnitude
     randomVector.y = randomVector.y/magnitude

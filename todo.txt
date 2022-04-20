@@ -1,2 +1,3 @@
-implement asteroid fracturing <-
 implement player death
+put in encouragement for the player to move often. A coin for more score, or a ship that shoots at the player?
+make it save high scores

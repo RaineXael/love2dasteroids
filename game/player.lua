@@ -24,7 +24,7 @@ function Player:new(x,y)
 		y = 0
    }
   
-  self.maxVelocity = 160
+  self.maxVelocity = 160 --default 160
   self.thrust = 160
 	self.friction = 40
 
@@ -127,10 +127,7 @@ end
 function Player:Draw()
 
   love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
-  --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y)
-
-	--love.graphics.print(self.x, 0,15)
-	--love.graphics.print(self.y, 0,30)
+  --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y) --draw velocity vector
 	
 	--draw bullets
 	for i in pairs(self.playerBulletTable) do
@@ -140,7 +137,7 @@ function Player:Draw()
 end
 
 function Player:OnKeyPress(key)
-	if key == "j" or key == "z" then 
+	if (key == "j" or key == "z") and self.playerBulletTable[3] == nil then 
 	--summon projectile
 	table.insert(self.playerBulletTable, PlayerBullet(self.x, self.y, self.rotation - 180))
 	end
