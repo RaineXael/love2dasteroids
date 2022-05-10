@@ -29,8 +29,10 @@ function Player:new(x,y)
 	self.friction = 40
 
   require("game/playerBullet")
+	require("game/shipDebris")
 
   self.playerBulletTable = {}
+	self.playerDebrisTable = {}
 
 end
 
@@ -94,6 +96,13 @@ function Player:Update(dt)
 		end
 	end
 
+	for i in pairs(self.playerDebrisTable) do
+		self.playerDebrisTable[i]:Update(dt)
+		if self.playerDebrisTable[i].dead then
+			table.remove(self.playerDebrisTable, i)
+		end
+	end
+
 end
 
 function Player:clampPosition()
@@ -120,8 +129,14 @@ end
 
 function Player:onHit()
 	self.lives = self.lives - 1
+
+	table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+	table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+	table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+
 	self.x = resolution.x / 2
 	self.y = resolution.y / 2
+
 end
 
 function Player:Draw()
@@ -132,6 +147,10 @@ function Player:Draw()
 	--draw bullets
 	for i in pairs(self.playerBulletTable) do
 		self.playerBulletTable[i]:Draw()
+	end
+
+	for i in pairs(self.playerDebrisTable) do
+			self.playerDebrisTable[i]:Draw()
 	end
 
 end
