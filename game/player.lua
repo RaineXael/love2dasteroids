@@ -34,60 +34,65 @@ function Player:new(x,y)
   self.playerBulletTable = {}
 	self.playerDebrisTable = {}
 
+	self.invincibleDuration = 2 --for respawn
+	self.invincibleTimer = 0
+
 end
 
 function Player:Update(dt)
 
-
-	if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
-		self.rotation = self.rotation - (dt * self.rotateSpeed)
-	end
-	
-	if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
-		self.rotation = self.rotation + (dt * self.rotateSpeed)
-	end
-	
-	if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
-		self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust * dt
-		self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust * dt
-	end
-	
-	--do velocity
-	
-	self.x = self.x + self.velocity.x * dt 
-	self.y = self.y + self.velocity.y * dt
-	
-	--clamp
-	self:clampPosition()
-	
-	self.magnitude = math.sqrt(math.pow(self.velocity.x, 2) + math.pow(self.velocity.y, 2))
-	--set normalized velocities
-	self.normalVelocity.x = (self.velocity.x / self.magnitude)
-	self.normalVelocity.y = (self.velocity.y / self.magnitude)
-	
-	if tostring(self.normalVelocity.x) == "nan" then
-		self.normalVelocity.x = 0
-	end
-	if tostring(self.normalVelocity.y) == "nan" then
-		self.normalVelocity.y = 0
-	end
-	
-	
-	if self.magnitude > self.maxVelocity then
+	if self.invincibleTimer <= 0 then
+		--if alive then
+		if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
+			self.rotation = self.rotation - (dt * self.rotateSpeed)
+		end
 		
-		--normalize
-		self.velocity.x = self.normalVelocity.x * self.maxVelocity
-		self.velocity.y = self.normalVelocity.y * self.maxVelocity
-
+		if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
+			self.rotation = self.rotation + (dt * self.rotateSpeed)
+		end
 		
-	end
+		if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
+			self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust * dt
+			self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust * dt
+		end
+		
+		--do velocity
+		
+		self.x = self.x + self.velocity.x * dt 
+		self.y = self.y + self.velocity.y * dt
+		
+		--clamp
+		self:clampPosition()
+		
+		self.magnitude = math.sqrt(math.pow(self.velocity.x, 2) + math.pow(self.velocity.y, 2))
+		--set normalized velocities
+		self.normalVelocity.x = (self.velocity.x / self.magnitude)
+		self.normalVelocity.y = (self.velocity.y / self.magnitude)
+		
+		if tostring(self.normalVelocity.x) == "nan" then
+			self.normalVelocity.x = 0
+		end
+		if tostring(self.normalVelocity.y) == "nan" then
+			self.normalVelocity.y = 0
+		end
+		
+		
+		if self.magnitude > self.maxVelocity then
+			
+			--normalize
+			self.velocity.x = self.normalVelocity.x * self.maxVelocity
+			self.velocity.y = self.normalVelocity.y * self.maxVelocity
 	
-	--print("Normalized Velocity: ", (self.velocity.x / self.magnitude), ",", (self.velocity.y / self.magnitude))
-
-	--friction
-	--apply an opposite force on the player on negative the normalized velocity.
-	self.velocity.x = self.velocity.x - (dt * self.friction * self.normalVelocity.x)
-	self.velocity.y = self.velocity.y - (dt * self.friction * self.normalVelocity.y)
+			
+		end
+		--friction
+		--apply an opposite force on the player on negative the normalized velocity.
+		self.velocity.x = self.velocity.x - (dt * self.friction * self.normalVelocity.x)
+		self.velocity.y = self.velocity.y - (dt * self.friction * self.normalVelocity.y)
+	else
+		--else subtract timer
+		self.invincibleTimer = self.invincibleTimer - dt
+	end
 	
 	for i in pairs(self.playerBulletTable) do
 		self.playerBulletTable[i]:Update(dt)
@@ -128,23 +133,32 @@ function Player:clampPosition()
 end
 
 function Player:onHit()
-	self.lives = self.lives - 1
+	if self.invincibleTimer <= 0 then
+		self.invincibleTimer = self.invincibleDuration
+		self.lives = self.lives - 1
+	
+		table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+		table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+		table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+	
+		self.x = resolution.x / 2
+		self.y = resolution.y / 2
 
-	table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
-	table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
-	table.insert(self.playerDebrisTable, ShipDebris(self.x, self.y, 3))
+		self.velocity.x = 0
+		self.velocity.y = 0
 
-	self.x = resolution.x / 2
-	self.y = resolution.y / 2
+		--also check if near any asteroids after respawn
+	end	
 
 end
 
 function Player:Draw()
 
-  love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
-  --love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y) --draw velocity vector
-	
-	--draw bullets
+ 	if self.invincibleTimer <= 0 then
+		love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
+		--love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y) --draw velocity vector	
+	end
+
 	for i in pairs(self.playerBulletTable) do
 		self.playerBulletTable[i]:Draw()
 	end
@@ -156,7 +170,7 @@ function Player:Draw()
 end
 
 function Player:OnKeyPress(key)
-	if (key == "j" or key == "z") and self.playerBulletTable[3] == nil then 
+	if (key == "j" or key == "z") and self.playerBulletTable[3] == nil and self.invincibleTimer <= 0 then 
 	--summon projectile
 	table.insert(self.playerBulletTable, PlayerBullet(self.x, self.y, self.rotation - 180))
 	end

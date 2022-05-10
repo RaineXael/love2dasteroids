@@ -8,7 +8,7 @@ function ShipDebris:new(x,y, lifetime)
 	self.x = x
 	self.y = y
 	
-	self.baseRotation = degToRad((love.math.random(628)/100)-3.14)
+	self.baseRotation = (love.math.random(628)/100)-3.14
 	self.currentRotation = self.baseRotation
 	self.rotationSpeed = degToRad(love.math.random(30)-15)
 	self.moveSpeed = love.math.random(15)+9
@@ -31,7 +31,6 @@ function ShipDebris:Update(dt)
 		end
 
 end
-
 
 
 function ShipDebris:Draw()
