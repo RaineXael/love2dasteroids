@@ -44,13 +44,6 @@ function Asteroid:Update(dt)
 
     --animate rotation
     self.rotation = self.rotation + self.rotateSpeed * dt
-
-    if getDistanceBetween(self, player) < self.size then
-        print("Player collide!")
-        --kill player
-        player:onHit()
-    end
-
     self:clampPosition()
 end
 

@@ -65,6 +65,20 @@ function getDistanceBetween(object1, object2)
 	
 end
 
+function checkAsteroidCollision()
+	--returns t/f if player touching any asteroid
+
+	for i in pairs(asteroids) do
+		if getDistanceBetween(asteroids[i], player) < asteroids[i].size then
+			--print("Player collide!")
+			--kill player
+			--player:onHit()
+			return true
+		end
+	end
+	return false
+end
+
 
 function Gamekeypressed(key)
 		

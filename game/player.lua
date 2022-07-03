@@ -37,61 +37,76 @@ function Player:new(x,y)
 	self.invincibleDuration = 2 --for respawn
 	self.invincibleTimer = 0
 
+	self.respawned = true --seccondary flag to determine if alive and spawned, for checking for asteroids on top of respawn point
+	
+
 end
 
 function Player:Update(dt)
-
-	if self.invincibleTimer <= 0 then
-		--if alive then
-		if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
-			self.rotation = self.rotation - (dt * self.rotateSpeed)
-		end
-		
-		if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
-			self.rotation = self.rotation + (dt * self.rotateSpeed)
-		end
-		
-		if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
-			self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust * dt
-			self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust * dt
-		end
-		
-		--do velocity
-		
-		self.x = self.x + self.velocity.x * dt 
-		self.y = self.y + self.velocity.y * dt
-		
-		--clamp
-		self:clampPosition()
-		
-		self.magnitude = math.sqrt(math.pow(self.velocity.x, 2) + math.pow(self.velocity.y, 2))
-		--set normalized velocities
-		self.normalVelocity.x = (self.velocity.x / self.magnitude)
-		self.normalVelocity.y = (self.velocity.y / self.magnitude)
-		
-		if tostring(self.normalVelocity.x) == "nan" then
-			self.normalVelocity.x = 0
-		end
-		if tostring(self.normalVelocity.y) == "nan" then
-			self.normalVelocity.y = 0
-		end
-		
-		
-		if self.magnitude > self.maxVelocity then
-			
-			--normalize
-			self.velocity.x = self.normalVelocity.x * self.maxVelocity
-			self.velocity.y = self.normalVelocity.y * self.maxVelocity
 	
-			
+	if self.invincibleTimer <= 0 then
+		if self.respawned then
+			--if alive then
+			if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
+				self.rotation = self.rotation - (dt * self.rotateSpeed)
+			end
+
+			if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
+				self.rotation = self.rotation + (dt * self.rotateSpeed)
+			end
+
+			if love.keyboard.isDown("w") or love.keyboard.isDown("up") then
+				self.velocity.x = self.velocity.x - math.cos(degToRad(self.rotation)) * self.thrust * dt
+				self.velocity.y = self.velocity.y - math.sin(degToRad(self.rotation)) * self.thrust * dt
+			end
+
+			--do velocity
+
+			self.x = self.x + self.velocity.x * dt 
+			self.y = self.y + self.velocity.y * dt
+
+			--clamp
+			self:clampPosition()
+
+			self.magnitude = math.sqrt(math.pow(self.velocity.x, 2) + math.pow(self.velocity.y, 2))
+			--set normalized velocities
+			self.normalVelocity.x = (self.velocity.x / self.magnitude)
+			self.normalVelocity.y = (self.velocity.y / self.magnitude)
+
+			if tostring(self.normalVelocity.x) == "nan" then
+				self.normalVelocity.x = 0
+			end
+			if tostring(self.normalVelocity.y) == "nan" then
+				self.normalVelocity.y = 0
+			end
+
+
+			if self.magnitude > self.maxVelocity then
+				
+				--normalize
+				self.velocity.x = self.normalVelocity.x * self.maxVelocity
+				self.velocity.y = self.normalVelocity.y * self.maxVelocity
+
+				
+			end
+			--friction
+			--apply an opposite force on the player on negative the normalized velocity.
+			self.velocity.x = self.velocity.x - (dt * self.friction * self.normalVelocity.x)
+			self.velocity.y = self.velocity.y - (dt * self.friction * self.normalVelocity.y)
+		else
+			--check if touching asteroid, and set respawned accordingly
+			self.respawned = not checkAsteroidCollision()
 		end
-		--friction
-		--apply an opposite force on the player on negative the normalized velocity.
-		self.velocity.x = self.velocity.x - (dt * self.friction * self.normalVelocity.x)
-		self.velocity.y = self.velocity.y - (dt * self.friction * self.normalVelocity.y)
+
 	else
 		--else subtract timer
 		self.invincibleTimer = self.invincibleTimer - dt
+
+	end
+
+	--detect asteroid collision
+	if checkAsteroidCollision() then
+		self:onHit()
 	end
 	
 	for i in pairs(self.playerBulletTable) do
@@ -133,7 +148,10 @@ function Player:clampPosition()
 end
 
 function Player:onHit()
-	if self.invincibleTimer <= 0 then
+
+	--what happens when player gets hit (not actual hit detection)
+	if self.invincibleTimer <= 0 and self.respawned == true then
+		self.respawned = false
 		self.invincibleTimer = self.invincibleDuration
 		self.lives = self.lives - 1
 	
@@ -146,15 +164,13 @@ function Player:onHit()
 
 		self.velocity.x = 0
 		self.velocity.y = 0
-
-		--also check if near any asteroids after respawn
-	end	
+	end
 
 end
 
 function Player:Draw()
 
- 	if self.invincibleTimer <= 0 then
+ 	if self.invincibleTimer <= 0 and self.respawned then
 		love.graphics.draw(self.sprite,self.x,self.y,degToRad(self.rotation - 90), 0.15, 0.15, 32, 32)
 		--love.graphics.line( self.x, self.y, self.x + self.velocity.x, self.y + self.velocity.y) --draw velocity vector	
 	end
