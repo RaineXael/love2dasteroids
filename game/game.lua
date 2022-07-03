@@ -14,7 +14,11 @@ function GameInitialize()
 		x = 3,
 		y = 3
 	}
+
+	bgm = love.audio.newSource("game/sound/music/bgm.wav", "static")
 	
+    bgm:setLooping(true)
+    bgm:play()
 end
 
 function randomPosition()

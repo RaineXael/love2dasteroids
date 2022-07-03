@@ -39,6 +39,8 @@ function Player:new(x,y)
 
 	self.respawned = true --seccondary flag to determine if alive and spawned, for checking for asteroids on top of respawn point
 	
+	--sfx
+	self.shootSFX = love.audio.newSource("game/sound/laserShoot.wav", "static")
 
 end
 
@@ -189,5 +191,7 @@ function Player:OnKeyPress(key)
 	if (key == "j" or key == "z") and self.playerBulletTable[3] == nil and self.invincibleTimer <= 0 then 
 	--summon projectile
 	table.insert(self.playerBulletTable, PlayerBullet(self.x, self.y, self.rotation - 180))
+	self.shootSFX:stop()
+	self.shootSFX:play()
 	end
 end
