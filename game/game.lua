@@ -3,6 +3,7 @@ function GameInitialize()
 
 	require("game/player")
 	require("game/asteroid")
+	require("game/coin")
 	player = Player(resolution.x/2, resolution.y/2)
     score = 0
 	asteroids = {} --table of asteroids
@@ -19,6 +20,8 @@ function GameInitialize()
 	
     bgm:setLooping(true)
     bgm:play()
+
+	coin = Coin()
 end
 
 function randomPosition()
@@ -53,6 +56,7 @@ function GameUpdate(dt)
 		spawnAsteroidWave(currentAsteroidCount)
 	end
 
+	coin:update()
 end
 
 function spawnAsteroidWave(count)
@@ -91,7 +95,9 @@ function Gamekeypressed(key)
 end
 
 function GameDraw()
+
 	
+	coin:draw()
 	player:Draw()
 	for i in pairs(asteroids) do
 		asteroids[i]:Draw()
