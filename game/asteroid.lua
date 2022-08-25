@@ -1,8 +1,17 @@
 Asteroid = Object:extend()
 
-function Asteroid:new(speed,destroyedLevel, scoreWorth)
-    self.x = randomPosition().x
-    self.y = randomPosition().y
+function Asteroid:new(speed,destroyedLevel, scoreWorth, x, y)
+	if x == nil then
+		self.x = randomPosition().x
+	else
+		self.x = x
+	end
+	
+	if y == nil then
+		self.y = randomPosition().y
+	else
+		self.y= y
+	end
 
     self.speed = speed
     self.velocity = self:RandomDirection()
@@ -38,9 +47,9 @@ function Asteroid:new(speed,destroyedLevel, scoreWorth)
 	--check if on top of player, if so, move to another location
 	self.extraSpawnRadius = 32 --extra distance for spawn trap protection
 	while(getDistanceBetween(self, player) < self.size + self.extraSpawnRadius and self.destroyedLevel == 3) do
-	print("Asteroid spawned on top of player. reroll position")
-    self.x = randomPosition().x
-    self.y = randomPosition().y
+		print("Asteroid spawned on top of player. reroll position")
+		self.x = randomPosition().x
+		self.y = randomPosition().y
 	end
 end
 
@@ -59,10 +68,8 @@ function Asteroid:Fragment()
 --give player score, mark for death, and fragment
     direction = self:RandomDirection()
 
-
-
-	table.insert(asteroids, Asteroid(self.x, self.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
-	table.insert(asteroids, Asteroid(self.x, self.y, self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5))
+	table.insert(asteroids, Asteroid(self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5, self.x, self.y))
+	table.insert(asteroids, Asteroid(self.speed * ((love.math.random(350)/100)+ 1)/2, self.destroyedLevel - 1, self.scoreWorth + 5, self.x, self.y))
 	self.dead = true
 	
 	score = score + self.scoreWorth
