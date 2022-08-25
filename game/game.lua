@@ -58,7 +58,7 @@ end
 function spawnAsteroidWave(count)
 		
 	for i=0,count,1 do
-		table.insert(asteroids, Asteroid(randomPosition().x,randomPosition().y,15,3,5))	
+		table.insert(asteroids, Asteroid(15,3,5))	
 	end	
 end
 
@@ -73,7 +73,7 @@ function checkAsteroidCollision()
 	--returns t/f if player touching any asteroid
 
 	for i in pairs(asteroids) do
-		if getDistanceBetween(asteroids[i], player) < asteroids[i].size then
+		if getDistanceBetween(asteroids[i], player) < asteroids[i].size and not asteroids[i].dead then
 			--print("Player collide!")
 			--kill player
 			--player:onHit()

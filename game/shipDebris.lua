@@ -22,7 +22,7 @@ end
 function ShipDebris:Update(dt)
 		self.x = self.x + (math.cos(self.baseRotation) * self.moveSpeed * dt)
 		self.y = self.y + (math.sin(self.baseRotation) * self.moveSpeed * dt)
-		print(math.cos(degToRad(self.baseRotation))* self.moveSpeed)
+		--print(math.cos(degToRad(self.baseRotation))* self.moveSpeed)
 		
 		self.currentRotation = self.currentRotation + self.rotationSpeed
 		self.lifetime = self.lifetime - dt

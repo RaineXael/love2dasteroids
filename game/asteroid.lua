@@ -1,8 +1,8 @@
 Asteroid = Object:extend()
 
-function Asteroid:new(x,y,speed,destroyedLevel, scoreWorth)
-    self.x = x
-    self.y = y
+function Asteroid:new(speed,destroyedLevel, scoreWorth)
+    self.x = randomPosition().x
+    self.y = randomPosition().y
 
     self.speed = speed
     self.velocity = self:RandomDirection()
@@ -34,6 +34,14 @@ function Asteroid:new(x,y,speed,destroyedLevel, scoreWorth)
         --no
 		self.dead = true
     end
+	
+	--check if on top of player, if so, move to another location
+	self.extraSpawnRadius = 32 --extra distance for spawn trap protection
+	while(getDistanceBetween(self, player) < self.size + self.extraSpawnRadius and self.destroyedLevel == 3) do
+	print("Asteroid spawned on top of player. reroll position")
+    self.x = randomPosition().x
+    self.y = randomPosition().y
+	end
 end
 
 function Asteroid:Update(dt)
