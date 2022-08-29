@@ -184,7 +184,6 @@ function Player:Draw()
 	for i in pairs(self.playerDebrisTable) do
 			self.playerDebrisTable[i]:Draw()
 	end
-
 end
 
 function Player:OnKeyPress(key)

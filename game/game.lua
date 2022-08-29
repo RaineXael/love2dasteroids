@@ -22,6 +22,8 @@ function GameInitialize()
     bgm:play()
 
 	coin = Coin()
+	coinCollectDistance = 9
+	coinScoreWorth = 8
 end
 
 function randomPosition()
@@ -56,11 +58,16 @@ function GameUpdate(dt)
 		spawnAsteroidWave(currentAsteroidCount)
 	end
 
-	coin:update()
+	coin:update(dt)
+
+	--check coin col (this ain't workin' buddy >:( ))
+	if getDistanceBetween(player,coin) < coinCollectDistance then
+		coin:randomizePosition()
+		score = score + coinScoreWorth
+	end
 end
 
 function spawnAsteroidWave(count)
-		
 	for i=0,count,1 do
 		table.insert(asteroids, Asteroid(15,3,5))	
 	end	
@@ -89,9 +96,7 @@ end
 
 
 function Gamekeypressed(key)
-		
 	player:OnKeyPress(key)
-
 end
 
 function GameDraw()

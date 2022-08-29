@@ -15,14 +15,13 @@ function Coin:new()
         love.graphics.newImage("game/sprites/collectible/6.png"),
         love.graphics.newImage("game/sprites/collectible/7.png"),
     }
-    self.animationSpeed = 0.5
+    self.animationSpeed = 0.10
     self.animationTimer = self.animationSpeed
 
-
     self.spriteIndex = 1
+    
 
     --self.collectSound = love.audio.newSource("game/sound/where's the goddamn sound.wav", "static")
-    --draw on the screen goddamnit
 end
 
 function Coin:randomizePosition()
@@ -40,16 +39,19 @@ function Coin:update(dt)
         self.animationTimer = self.animationTimer - dt
     else
         --timer done change sprite
-        if spriteIndex < 7 then
+        if self.spriteIndex < 7 then
             --upshift sprite index
             self.spriteIndex = self.spriteIndex + 1
         else
             --set si to 1
             self.spriteIndex = 1
         end
+        self.animationTimer = self.animationSpeed
     end
     
     --collision detection
+
+    
 
 end
 
