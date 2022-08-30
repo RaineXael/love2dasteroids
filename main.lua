@@ -23,7 +23,9 @@ function love.load()
 	
 	require("game/game")
 	require("game/mainmenu/mainmenu")
-	
+	require("saveManager")
+
+	setHighScore()
 
 	gameState = "mainmenu"
 	switchGameState(gameState, true)

@@ -1,3 +1,3 @@
 implement player death (done)
-put in encouragement for the player to move often. A coin for more score, or a ship that shoots at the player? (todo next)
+put in encouragement for the player to move often. A coin for more score, or a ship that shoots at the player? (done, but the collision detection is the player's top right corner which ain't cool)
 make it save high scores
