@@ -64,6 +64,7 @@ function GameUpdate(dt)
 	if getDistanceBetween(player,coin) < coinCollectDistance then
 		coin:randomizePosition()
 		score = score + coinScoreWorth
+		--todo balance so that when there are no more big asteroids the coin stops spawning
 	end
 end
 

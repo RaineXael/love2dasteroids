@@ -2,9 +2,8 @@
 Coin = Object:extend();
 
 function Coin:new()
-    self.x = 0
-    self.y = 0
-    self.randomizePosition()
+    self.x = love.math.random(resolution.x)
+    self.y = love.math.random(resolution.y)
 
     self.sprites = {
         love.graphics.newImage("game/sprites/collectible/1.png"),
@@ -25,12 +24,10 @@ function Coin:new()
 end
 
 function Coin:randomizePosition()
-        randomVector = {
-            x = love.math.random(resolution.x),
-            y = love.math.random(resolution.y)
-        }
-    
-        return randomVector
+
+    self.x = love.math.random(resolution.x)
+    self.y = love.math.random(resolution.y)
+    --todo add padding     
 end
 
 function Coin:update(dt)
@@ -49,12 +46,8 @@ function Coin:update(dt)
         self.animationTimer = self.animationSpeed
     end
     
-    --collision detection
-
-    
-
 end
 
 function Coin:draw()
-love.graphics.draw(self.sprites[self.spriteIndex], resolution.x/2, resolution.y/2) --sprite
+love.graphics.draw(self.sprites[self.spriteIndex], self.x, self.y) --sprite
 end 
