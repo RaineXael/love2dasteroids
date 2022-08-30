@@ -22,7 +22,7 @@ function GameInitialize()
     bgm:play()
 
 	coin = Coin()
-	coinCollectDistance = 9
+	coinCollectDistance = 18
 	coinScoreWorth = 8
 end
 
