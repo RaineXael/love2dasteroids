@@ -24,6 +24,8 @@ function GameInitialize()
 	coin = Coin()
 	coinCollectDistance = 18
 	coinScoreWorth = 8
+
+	gameOver = false;
 end
 
 function randomPosition()
@@ -98,6 +100,10 @@ end
 
 function Gamekeypressed(key)
 	player:OnKeyPress(key)
+
+	if gameOver and (key == 'z' or key == 'j') then
+		switchGameState("mainmenu", true)
+	end
 end
 
 function GameDraw()
@@ -114,4 +120,14 @@ function GameDraw()
 	
 	love.graphics.printf("LIVES:",camera.x - scorePadding.x, camera.y + scorePadding.y, math.floor(resolution.x), "right")
 	love.graphics.printf(player.lives,camera.x - scorePadding.x, camera.y + font:getHeight() + 2 + scorePadding.y, math.floor(resolution.x), "right")
+	if gameOver then
+		love.graphics.setColor(1,0,0,1)
+		love.graphics.printf("DEAD",camera.x, resolution.y/2, math.floor(resolution.x), "center")
+		love.graphics.setColor(1,1,1,1)
+	end
+end
+
+function gameOverState()
+	--gameover state, show highscore and highscore entry screen
+	gameOver = true
 end

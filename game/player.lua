@@ -2,7 +2,7 @@ Player = Object:extend()
 
 function Player:new(x,y)
 
-	self.lives = 3
+	self.lives = 1
 
   self.x = x
   self.y = y
@@ -101,8 +101,10 @@ function Player:Update(dt)
 		end
 
 	else
-		--else subtract timer
-		self.invincibleTimer = self.invincibleTimer - dt
+		--else subtract timer if lives aren't depleted
+		if self.lives > 0 then
+			self.invincibleTimer = self.invincibleTimer - dt
+		end
 
 	end
 
@@ -152,7 +154,7 @@ end
 function Player:onHit()
 
 	--what happens when player gets hit (not actual hit detection)
-	if self.invincibleTimer <= 0 and self.respawned == true then
+	if self.invincibleTimer <= 0 and self.respawned == true and self.lives then
 		self.respawned = false
 		self.invincibleTimer = self.invincibleDuration
 		self.lives = self.lives - 1
@@ -166,6 +168,11 @@ function Player:onHit()
 
 		self.velocity.x = 0
 		self.velocity.y = 0
+
+		--if lives depleted activate game.lua's gameover fn
+		if self.lives <= 0 then
+			gameOverState()
+		end
 	end
 
 end

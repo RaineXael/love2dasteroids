@@ -1,14 +1,9 @@
-function setHighScore()
-    filename = "test"
-    local success, message =love.filesystem.write( filename, "")
-    if success then 
-        print ('file created')
-    else 
-        print ('file not created: '..message)
-    end
+function setHighScore(input)
+    love.filesystem.write("hs", input)
 end
 
 function getHighScore()
     --returns high scorevalue
-
+    result, size = love.filesystem.read("hs")
+    return result
 end
