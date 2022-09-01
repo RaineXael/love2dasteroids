@@ -3,7 +3,7 @@ A basic asteroids clone made in the Love2D game engine.
 	
 ## TO-DO
 
-1. Create coin that gives points and moves somewhere else when you get it, like the food in Snake.
+1. Remove coin and add spaceship that shoots bullets at you
 2. High Score Saving & Game Over state
 3. Settings Menu - Change audio volume, resolution and more. 
 4. General Polish

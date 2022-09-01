@@ -3,7 +3,7 @@ function GameInitialize()
 
 	require("game/player")
 	require("game/asteroid")
-	require("game/coin")
+
 	player = Player(resolution.x/2, resolution.y/2)
     score = 0
 	asteroids = {} --table of asteroids
@@ -20,10 +20,6 @@ function GameInitialize()
 	
     bgm:setLooping(true)
     bgm:play()
-
-	coin = Coin()
-	coinCollectDistance = 18
-	coinScoreWorth = 8
 
 	gameOver = false;
 end
@@ -58,15 +54,6 @@ function GameUpdate(dt)
 		--should spawn another wave of asteroids
 		currentAsteroidCount = currentAsteroidCount + 1
 		spawnAsteroidWave(currentAsteroidCount)
-	end
-
-	coin:update(dt)
-
-	--check coin col (this ain't workin' buddy >:( ))
-	if getDistanceBetween(player,coin) < coinCollectDistance then
-		coin:randomizePosition()
-		score = score + coinScoreWorth
-		--todo balance so that when there are no more big asteroids the coin stops spawning
 	end
 end
 
@@ -109,7 +96,6 @@ end
 function GameDraw()
 
 	
-	coin:draw()
 	player:Draw()
 	for i in pairs(asteroids) do
 		asteroids[i]:Draw()
