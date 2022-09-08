@@ -26,6 +26,8 @@ function GameInitialize()
     bgm:play()
 
 	gameOver = false;
+	displayHighScore = false;
+	thisHighScore = tonumber(getHighScore())
 end
 
 function randomPosition()
@@ -121,17 +123,23 @@ function GameDraw()
 		love.graphics.setColor(1,0,0,1)
 		love.graphics.printf("DEAD",camera.x, resolution.y/2, math.floor(resolution.x), "center")
 		love.graphics.setColor(1,1,1,1)
+
+		if displayHighScore then
+			love.graphics.printf("But you got a HIGH SCORE of:",camera.x, (resolution.y/2) + 16, math.floor(resolution.x), "center")
+			love.graphics.printf(score,camera.x, (resolution.y/2) + 16+12, math.floor(resolution.x), "center")	
+		else
+			love.graphics.printf("HIGH SCORE:",camera.x, (resolution.y/2) + 16, math.floor(resolution.x), "center")
+			love.graphics.printf(thisHighScore,camera.x, (resolution.y/2) + 16+12, math.floor(resolution.x), "center")	
+		end
 	end
 end
 
 function gameOverState()
 	--gameover state, show highscore and highscore entry screen
 	gameOver = true
-	local bestScore = tonumber(getHighScore())
-
-
-	if score >= bestScore then
-		print("High score! Your score of ", score, " is above the hs of ", bestScore)
+	if score >= thisHighScore then
+		print("High score! Your score of ", score, " is above the hs of ", thisHighScore)
 		setHighScore(score)
+		displayHighScore = true
 	end
 end
