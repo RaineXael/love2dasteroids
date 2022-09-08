@@ -1,5 +1,8 @@
 function love.load()
 
+
+	
+
 	--init video settings
 	love.graphics.setDefaultFilter("nearest","nearest",1)
 	font = love.graphics.newFont("prstart.ttf",8)
@@ -24,6 +27,12 @@ function love.load()
 	require("game/game")
 	require("game/mainmenu/mainmenu")
 	require("saveManager")
+
+	--create save file if empty
+	if getHighScore() == nil then
+		setHighScore(0)
+		print("No save file! Creating new one")
+	end
 
 	gameState = "mainmenu"
 	switchGameState(gameState, true)

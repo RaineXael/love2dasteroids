@@ -9,7 +9,7 @@ function GameInitialize()
     score = 0
 	asteroids = {} --table of asteroids
 	
-	enemy = Enemy()
+	--enemy = Enemy()
 	enemyDistance = 8
 
 	currentAsteroidCount = 1;
@@ -49,7 +49,7 @@ function GameUpdate(dt)
 		
 	end
 
-	enemy:update(dt)
+	--enemy:update(dt)
 	
 	if love.keyboard.isDown("g") then
 		score = score + 1
@@ -94,6 +94,8 @@ end
 function Gamekeypressed(key)
 	player:OnKeyPress(key)
 
+	--switch to main menu after death and click z or j (change to
+	--name input screen instead of instant boot)
 	if gameOver and (key == 'z' or key == 'j') then
 		switchGameState("mainmenu", true)
 	end
@@ -107,7 +109,7 @@ function GameDraw()
 		asteroids[i]:Draw()
 	end
 
-	enemy:draw()
+	--enemy:draw()
 
 
 	love.graphics.print("SCORE:",camera.x + scorePadding.x, camera.y + scorePadding.y)
@@ -125,4 +127,11 @@ end
 function gameOverState()
 	--gameover state, show highscore and highscore entry screen
 	gameOver = true
+	local bestScore = tonumber(getHighScore())
+
+
+	if score >= bestScore then
+		print("High score! Your score of ", score, " is above the hs of ", bestScore)
+		setHighScore(score)
+	end
 end

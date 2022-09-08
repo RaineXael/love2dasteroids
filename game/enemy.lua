@@ -18,6 +18,8 @@ function Enemy:new()
     self.respawnTimer = 0
     self.dead = false
     
+    
+
 
 end
 
@@ -46,7 +48,7 @@ function Enemy:update(dt)
             self.shootTimer = self.shootTimer - dt
         else
             --timer done 
-            --spawn bullet (or in this case a small asteroid????)
+            --spawn bullet
             --reset timer
             print("enemy should shoot")
             self.shootTimer = love.math.random(self.shootSpeedMin, self.shootSpeedMax)
