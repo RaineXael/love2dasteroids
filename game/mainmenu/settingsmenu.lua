@@ -1,6 +1,12 @@
---contains main menu loop
+--contains settings menu loop
 
-function mainMenustart()
+--needed settings
+--resolution change
+--lives setting
+--erase save data
+--???
+
+function settingsMenustart()
     mainMenuIndex = 0
 
     require("game/mainmenu/menuButton")
@@ -9,10 +15,10 @@ function mainMenustart()
 
     menuButtonGroup = {
         buttonObjects = {
-            MenuButton(resolution.x/2, 0, "New Game"),
-            MenuButton(resolution.x/2, 0, "Settings"),
-            MenuButton(resolution.x/2, 0, "Credits"),
-            MenuButton(resolution.x/2, 0, "Quit"),
+            MenuButton(0, 0, "New Game"),
+            MenuButton(0, 0, "Settings"),
+            MenuButton(0, 0, "Credits"),
+            MenuButton(0, 0, "Quit"),
         }, 
 
         globalY = resolution.y/2
@@ -22,7 +28,7 @@ function mainMenustart()
     menuMoveSFX = love.audio.newSource("sounds/menu/move.wav", "static")
 end
 
-function mainMenuUpdate(dt)
+function settingsMenuUpdate(dt)
 
     for i in pairs(menuButtonGroup.buttonObjects) do 
         if i - 1 == mainMenuIndex then --minus one for weird array thing
@@ -33,7 +39,7 @@ function mainMenuUpdate(dt)
     end
 end
 
-function mainMenuDraw()
+function settingsMenuDraw()
 
 	love.graphics.draw(titleImage,math.floor(camera.x + (resolution.x/2) - 32), camera.y + 20)
 
@@ -44,7 +50,7 @@ function mainMenuDraw()
     
 end
 
-function mainMenukeypressed(key)
+function settingsMenukeypressed(key)
 
     if (key == "w" or key == "up") and mainMenuIndex > 0 then
         love.audio.play(menuMoveSFX)

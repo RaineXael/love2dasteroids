@@ -26,6 +26,7 @@ function love.load()
 	
 	require("game/game")
 	require("game/mainmenu/mainmenu")
+	require("game/mainmenu/settingsmenu")
 	require("saveManager")
 
 	--create save file if empty
@@ -46,6 +47,8 @@ function love.update(dt)
 		GameUpdate(dt)
 	elseif gameState == "mainmenu" then
 		mainMenuUpdate(dt)
+	elseif gameState == "settingsmenu" then
+		settingsMenuUpdate(dt)
 	end
 	
 	--hold escape to quit
@@ -67,8 +70,9 @@ function love.keypressed(key)
 		Gamekeypressed(key)
 	elseif gameState == "mainmenu" then
 		mainMenukeypressed(key)
+	elseif gameState == "settingsmenu" then
+		settingsMenukeypressed(key)
 	end
-
 	
 	--keys that work everywhere
 	if(key == "f1") then
@@ -105,7 +109,6 @@ end
 
 
 function switchScale(value)
-
 	windowScale = value
 	love.window.setMode( resolution.x * windowScale, resolution.y * windowScale, {resizable=true})
 end
