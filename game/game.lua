@@ -3,13 +3,11 @@ function GameInitialize()
 
 	require("game/player")
 	require("game/asteroid")
-	require("game/enemy")
 
 	player = Player(resolution.x/2, resolution.y/2)
     score = 0
 	asteroids = {} --table of asteroids
 	
-	--enemy = Enemy()
 	enemyDistance = 8
 
 	currentAsteroidCount = 1;
@@ -51,7 +49,6 @@ function GameUpdate(dt)
 		
 	end
 
-	--enemy:update(dt)
 	
 	if love.keyboard.isDown("g") then
 		score = score + 1

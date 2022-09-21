@@ -6,10 +6,10 @@ function mainMenustart()
     require("game/mainmenu/menuButton")
 
     titleImage = love.graphics.newImage("game/sprites/menu/logo.png")
-
+    menuButtonGroup = {}
     menuButtonGroup = {
         buttonObjects = {
-            MenuButton(resolution.x/2, 0, "New Game"),
+            MenuButton(resolution.x/2, 0, "Play"),
             MenuButton(resolution.x/2, 0, "Settings"),
             MenuButton(resolution.x/2, 0, "Credits"),
             MenuButton(resolution.x/2, 0, "Quit"),
@@ -74,6 +74,7 @@ function menuSelect()
        switchGameState("game", true)
     elseif mainMenuIndex == 1 then
         --settings
+        switchGameState("settingsmenu", true)
     elseif mainMenuIndex == 2 then
         --credits
     else
