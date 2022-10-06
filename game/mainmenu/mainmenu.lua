@@ -10,12 +10,13 @@ function mainMenustart()
     menuButtonGroup = {
         buttonObjects = {
             MenuButton(resolution.x/2, 0, "New Game"),
+            MenuButton(resolution.x/2, 0, "High Scores"),
             MenuButton(resolution.x/2, 0, "Settings"),
             MenuButton(resolution.x/2, 0, "Credits"),
             MenuButton(resolution.x/2, 0, "Quit"),
         }, 
 
-        globalY = resolution.y/2
+        globalY = resolution.y/3
 
     }
 
@@ -73,8 +74,13 @@ function menuSelect()
         --begin game
        switchGameState("game", true)
     elseif mainMenuIndex == 1 then
-        --settings
+        --continue
+		switchGameState("game", false)
+		--should continue & load save
     elseif mainMenuIndex == 2 then
+        --settings
+        
+    elseif mainMenuIndex == 3 then
         --credits
     else
         --quit
