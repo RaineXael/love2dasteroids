@@ -99,8 +99,6 @@ function love.draw()
 		GameDraw()	
 	elseif gameState == "mainmenu" then
 		mainMenuDraw()
-	elseif gameState == "settingsMenu" then
-		settingsMenuDraw()
 	end
 
 	--love.graphics.print(love.timer.getFPS(),camera.x, camera.y)	
@@ -120,21 +118,19 @@ function switchGameState(state, reset)
 	if state == "mainmenu" then
 	--start mainmenu
 		if reset then
-			mainMenustart()	
+			mainMenustart()
+		else
+		
 		end
 		gameState="mainmenu"
 	elseif state == "game" then
 	--start game
 		if reset then
 			GameInitialize()
+		else
+		
 		end
 		gameState="game"
-	elseif state == "settingsmenu" then
-		--start settingsmenu
-			if reset then
-				settingsMenustart()
-			end
-			gameState="settingsmenu"
 	end
 end
 
