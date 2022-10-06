@@ -10,13 +10,15 @@ function settingsMenustart()
     mainMenuIndex = 0
 
     require("game/mainmenu/menuButton")
-    menuButtonGroup = {}
+
+    titleImage = love.graphics.newImage("game/sprites/menu/logo.png")
+
     menuButtonGroup = {
         buttonObjects = {
-            MenuButton(0, 0, "Resolution"),
-            MenuButton(0, 0, "Starting Lives"),
-            MenuButton(0, 0, "Erase High Score"),
-            MenuButton(0, 0, "Back"),
+            MenuButton(0, 0, "New Game"),
+            MenuButton(0, 0, "Settings"),
+            MenuButton(0, 0, "Credits"),
+            MenuButton(0, 0, "Quit"),
         }, 
 
         globalY = resolution.y/2
@@ -39,9 +41,12 @@ end
 
 function settingsMenuDraw()
 
+	love.graphics.draw(titleImage,math.floor(camera.x + (resolution.x/2) - 32), camera.y + 20)
+
     for i in pairs(menuButtonGroup.buttonObjects) do 
         menuButtonGroup.buttonObjects[i]:draw(-5 + camera.x, menuButtonGroup.globalY + (i * 20) + camera.y)
     end
+
     
 end
 
@@ -71,14 +76,15 @@ end
 --selecting a menu item
 function menuSelect()
     if mainMenuIndex == 0 then
-       --toggle resolution
+        --begin game
+       switchGameState("game", true)
     elseif mainMenuIndex == 1 then
-        --toggle lives
+        --settings
     elseif mainMenuIndex == 2 then
-        --erase savedata
+        --credits
     else
-        --go back
-        switchGameState("mainmenu", true)
+        --quit
+        love.event.quit()
     end
 
 end
